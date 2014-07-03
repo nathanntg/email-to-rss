@@ -51,7 +51,7 @@ class Cdn
         return $content;
     }
 
-    public static function putFile($name, $body) {
+    public static function putFile($name, $body, $content_type=null) {
         $s3 = self::_getS3();
 
         // get bucket and prefix
@@ -68,7 +68,8 @@ class Cdn
                 'Key'           => $key,
 				'Body'          => $body,
 				'ACL'           => \Aws\S3\Enum\CannedAcl::PUBLIC_READ,
-                'StorageClass'  => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY
+                'StorageClass'  => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY,
+                'ContentType'   => $content_type
             ]);
         }
         catch (Exception $e) {

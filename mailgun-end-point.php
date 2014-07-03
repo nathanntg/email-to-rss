@@ -119,7 +119,7 @@ $r->updateChannelDates(time());
 
 // put to cdn
 try {
-    $rss = Cdn::putFile($rss_file, (string)$r);
+    $rss = Cdn::putFile($rss_file, (string)$r, 'application/rss+xml');
 }
 catch (Exception $e) {
     header('HTTP/1.1 503 Service Unavailable');
