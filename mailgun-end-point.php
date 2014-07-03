@@ -89,7 +89,7 @@ $rss_file = mapFromToRss($from, $recipient);
 
 // read current rss file
 try {
-    $rss = Cdn::getFile($rss_file);
+    $rss = Cdn::getFile(AWS_PREFIX . $rss_file);
 }
 catch (Exception $e) {
     header('HTTP/1.1 503 Service Unavailable');
@@ -110,7 +110,9 @@ if (false === $rss) {
 $r = new Rss($rss);
 
 // add item
-$r->addItem($subject, $content, sprintf('http://%s/%s%s', AWS_BUCKET, AWS_PREFIX, $message_id), $message_id, $_POST['timestamp']);
+$static_html = sprintf('%scontent/%s.html', AWS_PREFIX, $message_id);
+$static_html_url = sprintf('http://%s/%s', AWS_BUCKET, $static_html);
+$r->addItem($subject, $content, $static_html_url, $message_id, $_POST['timestamp']);
 
 // clean up
 $r->cleanOldItems();
@@ -120,10 +122,15 @@ $r->updateChannelDates(time());
 
 // put to cdn
 try {
-    $rss = Cdn::putFile($rss_file, (string)$r, 'application/rss+xml');
+    Cdn::putFile(AWS_PREFIX . $rss_file, (string)$r, 'application/rss+xml');
 }
 catch (Exception $e) {
     header('HTTP/1.1 503 Service Unavailable');
     echo $e->getMessage();
     exit(1);
+}
+
+// store HTML page
+if (STORE_HTML_PAGE) {
+    Cdn::putFile($static_html, $content, 'text/html');
 }

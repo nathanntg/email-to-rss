@@ -20,6 +20,7 @@ require(ROOT_INCLUDES . 'rss.i.php');
 define('AWS_BUCKET', 'bucket-name');
 define('AWS_PREFIX', '');
 define('EMAIL_MAX_SIZE', 512000); // 512KB
+define('STORE_HTML_PAGE', true);
 
 // use a default mapping function
 if (!function_exists('mapFromToRss')) {
