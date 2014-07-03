@@ -46,8 +46,8 @@ if (isset($_POST['body-html'])) {
         }
     }
 }
-elseif (isset($_POST['body-text'])) {
-    $content = $_POST['body-text'];
+elseif (isset($_POST['body-plain'])) {
+    $content = $_POST['body-plain'];
 
     // escape and add new lines
     $content = nl2br(htmlspecialchars($content, ENT_HTML5 | ENT_COMPAT | ENT_IGNORE, 'UTF-8'));
