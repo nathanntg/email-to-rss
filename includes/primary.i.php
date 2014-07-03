@@ -1,10 +1,5 @@
 <?php
 
-// settings
-define('AWS_BUCKET', 'rss.emailtorss.com');
-define('AWS_PREFIX', '');
-define('EMAIL_MAX_SIZE', 512000); // 512KB
-
 // directory
 define('ROOT', __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR);
 define('ROOT_INCLUDES', __DIR__ . DIRECTORY_SEPARATOR);
@@ -13,10 +8,25 @@ define('ROOT_INCLUDES', __DIR__ . DIRECTORY_SEPARATOR);
 require(ROOT . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
 
 // mailgun
+if (file_exists(ROOT_INCLUDES . 'configuration.i.php')) {
+    require(ROOT_INCLUDES . 'configuration.i.php');
+}
 require(ROOT_INCLUDES . 'mailgun.i.php');
 require(ROOT_INCLUDES . 'log.i.php');
 require(ROOT_INCLUDES . 'cdn.i.php');
 require(ROOT_INCLUDES . 'rss.i.php');
+
+// default settings
+define('AWS_BUCKET', 'bucket-name');
+define('AWS_PREFIX', '');
+define('EMAIL_MAX_SIZE', 512000); // 512KB
+
+// use a default mapping function
+if (!function_exists('mapFromToRss')) {
+    function mapFromToRss($from) {
+        return 'other.rss';
+    }
+}
 
 // get configuration variable
 function configurationGet($variable) {
@@ -25,23 +35,4 @@ function configurationGet($variable) {
     }
 
     return $_ENV[$variable];
-}
-
-function mapFromToRss($from) {
-    $mapping = [
-        '@qz.com'           =>  'quartz.rss',
-        '@nowiknow.com'     =>  'nowiknow.com',
-        '@quora.com'        =>  'quora.rss',
-        '@davenetics.com'   =>  'nextdraft.rss',
-        '@nextdraft.com'    =>  'nextdraft.rss',
-        '@lists.stripe.com' =>  'stripe.rss'
-    ];
-
-    foreach ($mapping as $key => $val) {
-        if (false !== stripos($from, $key)) {
-            return $val;
-        }
-    }
-
-    return 'other.rss';
 }
