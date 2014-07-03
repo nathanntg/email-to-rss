@@ -23,7 +23,12 @@ define('EMAIL_MAX_SIZE', 512000); // 512KB
 
 // use a default mapping function
 if (!function_exists('mapFromToRss')) {
-    function mapFromToRss($from) {
+    function mapFromToRss($from, $to) {
+        // accept wildcard email addresses (for example, sample.rss@emailtorss.com)
+        if (preg_match('/([-_a-z0-9]+\.rss)/i', $to, $match)) {
+            return $match[0];
+        }
+
         return 'other.rss';
     }
 }

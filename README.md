@@ -13,3 +13,6 @@ In order to deploy, you must have the following environment variables setup in H
 * `MAILGUN_API_KEY` Your Mailgun private API key.
 * `AWS_KEY` Your Amazon Web Services key.
 * `AWS_SECRET` Your Amazon WebService secret.
+
+Mailgun must be setup to route messages to the mailgun-end-point.php file. Routed emails will automatically
+be appended to the RSS file and uploaded to the S3 bucket.

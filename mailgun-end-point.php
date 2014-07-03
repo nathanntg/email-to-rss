@@ -85,8 +85,9 @@ foreach (json_decode($_POST['message-headers']) as $header) {
 }
 
 // rss file
-$rss_file = mapFromToRss($from);
+$rss_file = mapFromToRss($from, $recipient);
 
+// read current rss file
 try {
     $rss = Cdn::getFile($rss_file);
 }
