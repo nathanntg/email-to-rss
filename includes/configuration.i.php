@@ -7,7 +7,7 @@ define('AWS_BUCKET', 'rss.emailtorss.com');
 function mapFromToRss($from, $to) {
     $mapping = [
         '@qz.com'           =>  'quartz.rss',
-        '@nowiknow.com'     =>  'nowiknow.com',
+        '@nowiknow.com'     =>  'nowiknow.rss',
         '@quora.com'        =>  'quora.rss',
         '@davenetics.com'   =>  'nextdraft.rss',
         '@nextdraft.com'    =>  'nextdraft.rss',
