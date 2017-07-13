@@ -79,7 +79,6 @@ class Rss
             /** @var \DOMNode $item */
             $tm = 0;
             foreach ($item->childNodes as $node) {
-                var_dump($node->nodeName, $node->textContent);
                 if ('pubDate' === $node->nodeName) {
                     $tm = strtotime($node->textContent);
                     break;
