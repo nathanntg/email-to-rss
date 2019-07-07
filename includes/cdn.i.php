@@ -78,7 +78,7 @@ class Cdn
                 'Bucket'        => $bucket,
                 'Key'           => $key,
 				'Body'          => $body,
-				'ACL'           => 'private',
+				'ACL'           => 'public-read',
                 'StorageClass'  => 'REDUCED_REDUNDANCY',
                 'ContentType'   => $content_type
             ]);
