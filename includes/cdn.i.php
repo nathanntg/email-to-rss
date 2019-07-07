@@ -10,10 +10,13 @@ class Cdn
     private static function _getS3() {
         if (!isset(self::$_s3)) {
             // configure S3
-            self::$_s3 = \Aws\S3\S3Client::factory([
-                'key' => configurationGet('AWS_KEY'),
-                'secret' => configurationGet('AWS_SECRET'),
-                'region' => 'us-east-1'
+            self::$_s3 = new \Aws\S3\S3Client([
+	            'version' => '2006-03-01',
+	            'region' => 'us-east-2',
+	            'credentials' => [
+		            'key' => configurationGet('AWS_KEY'),
+                    'secret' => configurationGet('AWS_SECRET'),
+	            ],
             ]);
         }
 
@@ -36,8 +39,16 @@ class Cdn
                 'Key'       => $key
             ]);
         }
-        catch (\Aws\S3\Exception\NoSuchKeyException $e) {
-            return false;
+        catch (\Aws\S3\Exception\S3Exception $e) {
+	        switch ($e->getAwsErrorCode()) {
+		        case 'NoSuchKey':
+		        case 'NotFound':
+			        return false;
+
+		        default:
+			        Log::addError('Unable to get existing file from CDN: ' . $e->getMessage());
+			        throw $e;
+	        }
         }
         catch (Exception $e) {
             Log::addError('Unable to get existing file from CDN: ' . $e->getMessage());
@@ -67,8 +78,8 @@ class Cdn
                 'Bucket'        => $bucket,
                 'Key'           => $key,
 				'Body'          => $body,
-				'ACL'           => \Aws\S3\Enum\CannedAcl::PUBLIC_READ,
-                'StorageClass'  => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY,
+				'ACL'           => 'private',
+                'StorageClass'  => 'REDUCED_REDUNDANCY',
                 'ContentType'   => $content_type
             ]);
         }
