@@ -79,7 +79,6 @@ class Cdn
                 'Key'           => $key,
 				'Body'          => $body,
 				'ACL'           => 'public-read',
-                'StorageClass'  => 'REDUCED_REDUNDANCY',
                 'ContentType'   => $content_type
             ]);
         }
