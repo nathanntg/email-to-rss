@@ -12,7 +12,7 @@ class Cdn
             // configure S3
             self::$_s3 = new \Aws\S3\S3Client([
 	            'version' => '2006-03-01',
-	            'region' => 'us-east-2',
+	            'region' => AWS_REGION,
 	            'credentials' => [
 		            'key' => configurationGet('AWS_KEY'),
                     'secret' => configurationGet('AWS_SECRET'),

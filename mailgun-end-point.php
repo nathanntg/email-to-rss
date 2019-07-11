@@ -111,7 +111,12 @@ $r = new Rss($rss);
 
 // add item
 $static_html = sprintf('%scontent/%s.html', AWS_PREFIX, $message_id);
-$static_html_url = sprintf('http://%s/%s', AWS_BUCKET, $static_html);
+if (defined('AWS_BUCKET_URL')) {
+	$static_html_url = sprintf('%s/%s', AWS_BUCKET_URL, $static_html);
+}
+else {
+	$static_html_url = sprintf('http://%s.s3.%s.amazonaws.com/%s', AWS_BUCKET, AWS_REGION, $static_html);
+}
 $r->addItem($subject, $content, $static_html_url, $message_id, $_POST['timestamp']);
 
 // clean up

@@ -1,7 +1,9 @@
 <?php
 
 // configuration fil
+define('AWS_REGION', 'us-east-2');
 define('AWS_BUCKET', 'emailtorss-cdn');
+define('AWS_BUCKET_URL', 'https://rss.emailtorss.com');
 
 // nicer mapping
 function mapFromToRss($from, $to) {
